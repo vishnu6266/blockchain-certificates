@@ -1,3 +1,16 @@
+
+# To build docker image
+docker build -t laur/block-chain-certificates:1.0 .
+
+# To run docker container
+
+docker run -it --name block-chain-certificates -v <project-folder>/data:/etc/data laur/block-chain-certificates:1.0
+
+# To create certificate
+create-certificates -c /etc/data/config.ini
+
+
+
 blockchain-certificates
 =======================
 
