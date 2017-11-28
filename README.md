@@ -4,12 +4,52 @@ docker build -t laur/block-chain-certificates:1.0 .
 
 #### To run docker container
 
-docker run -it --name block-chain-certificates -v <project-folder>/data:/etc/data laur/block-chain-certificates:1.0
+docker run -it -d --name block-chain-certificates -p 8332:8332 -p 8333:8333 -p 18332:18332 -p 18333:18333 -p 18444:18444 -v <project_folder>/data:/etc/data laur/block-chain-certificates:1.0
 
-#### To create certificate
+
+docker run -it -d --name block-chain-certificates -p 8332:8332 -p 8333:8333 -p 18332:18332 -p 18333:18333 -p 18444:18444  -v /Users/snair/Documents/Data/Incubation/BlockChain/blockchain-certificates/data:/etc/data laur/block-chain-certificates:1.0
+
+
+#### bitcoin-cli
+
+bitcoin-cli getnewaddress
+bitcoin-cli generate 101
+bitcoin-cli getbalance
+bitcoin-cli sendtoaddress <address> 10
+
+bitcoin-cli dumpprivkey <address>
+
+bitcoin-cli listunspent 0
+
+bitcoin-cli -regtest validateaddress <address>
+
+### testnet
+
+Generate a test wallet and get some testnet coins
+
+https://blog.smoogs.io/how-to-get-a-testnet-wallet-and-coins-f480c678f23a
+
+#### Generate the certificates
+
+Update data/config.ini with wallet id
+
+sudo docker exec -it block-chain-certificates /bin/bash
+
+source new_py3_env/bin/activate
+
 create-certificates -c /etc/data/config.ini
 
+deactivate
 
+
+####
+
+bitcoin-core
+
+/Applications/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -testnet -dnsseed=0 -connect=localhost:18332 -datadir=/Users/snair/Documents/Data/Incubation/BlockChain/localnet/
+
+
+/Applications/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -regtest -dnsseed=0 -connect=localhost:18332 -datadir=/Users/snair/Documents/Data/Incubation/BlockChain/regtest/
 
 blockchain-certificates
 =======================

@@ -14,9 +14,10 @@
 #source new_py3_env/bin/activate 
 
 #pip3 install /blockchain_certificates/. 
+#cp -p /etc/data/bitcoin.conf  ~/.bitcoin/
 
 #Start bitcoind
-bitcoind -daemon -conf=/etc/data/bitcoin.conf && bash 
+bitcoind -daemon -conf=/etc/data/bitcoin.conf  && bash 
 
 
 #sleep 1m
