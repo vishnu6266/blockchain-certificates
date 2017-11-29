@@ -1,37 +1,61 @@
 
-#### To build docker image
+### To build docker image
 docker build -t laur/block-chain-certificates:1.0 .
 
-#### To run docker container
+### To run docker container
 
-docker run -it -d --name block-chain-certificates -p 8332:8332 -p 8333:8333 -p 18332:18332 -p 18333:18333 -p 18444:18444 -v <project_folder>/data:/etc/data laur/block-chain-certificates:1.0
+docker run -it -d --name block-chain-certificates -p 28332:8332 -p 28333:8333 -p 48332:18332 -p 48333:18333 -p 48444:18444 -v <project_folder>/data:/etc/data laur/block-chain-certificates:1.0
 
+### Create certificate
 
-docker run -it -d --name block-chain-certificates -p 8332:8332 -p 8333:8333 -p 18332:18332 -p 18333:18333 -p 18444:18444  -v /Users/snair/Documents/Data/Incubation/BlockChain/blockchain-certificates/data:/etc/data laur/block-chain-certificates:1.0
+#### To test using regtest
 
+bitcoin-cli -regtest getnewaddress
 
-#### bitcoin-cli
+bitcoin-cli -regtest generate 101
+bitcoin-cli -regtest getbalance
+bitcoin-cli -regtest sendtoaddress <address> 10
 
-bitcoin-cli getnewaddress
-bitcoin-cli generate 101
-bitcoin-cli getbalance
-bitcoin-cli sendtoaddress <address> 10
+bitcoin-cli -regtest listunspent 0
 
-bitcoin-cli dumpprivkey <address>
+bitcoin-cli -regtest generate 1
 
-bitcoin-cli listunspent 0
+bitcoin-cli -regtest listunspent 1
 
 bitcoin-cli -regtest validateaddress <address>
 
-### testnet
+Update data/config.ini with address
 
-Generate a test wallet and get some testnet coins
+sudo docker exec -it block-chain-certificates /bin/bash
+
+source new_py3_env/bin/activate
+
+create-certificates -c /etc/data/config.ini
+
+deactivate
+
+Run following command before executing this command
+
+bitcoin-cli -regtest generate 1
+
+#### testnet
+
+Generate test net wallet
+
+https://www.bitaddress.org/bitaddress.org-v1.9-SHA1-a487b495d710d6f617d688e5f758e40c8b6c510e.html?testnet=true
+
+Get some testnet coins
 
 https://blog.smoogs.io/how-to-get-a-testnet-wallet-and-coins-f480c678f23a
 
-#### Generate the certificates
+bitcoin-cli importprivkey <Private Key>  "My Testnet Wallet"
 
-Update data/config.ini with wallet id
+bitcoin-cli -testnet validateaddress <pub key> 
+
+bitcoin-cli -testnet getbalance <pub key>
+
+
+Update data/config.ini with public key
 
 sudo docker exec -it block-chain-certificates /bin/bash
 
@@ -42,14 +66,21 @@ create-certificates -c /etc/data/config.ini
 deactivate
 
 
+### Validate Certificate
+
+Validatation of the certificate is only supported in testnet since dependency with
+https://github.com/karask/blockchain-proofs.git
+
+    validate-certificates -c /etc/data/config.ini -f /etc/data/Andreas_Vlachos.pdf
+
 ####
 
 bitcoin-core
 
-/Applications/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -testnet -dnsseed=0 -connect=localhost:18332 -datadir=/Users/snair/Documents/Data/Incubation/BlockChain/localnet/
+/Applications/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -testnet -dnsseed=0 -connect=localhost:18332 -datadir=<dir>
 
 
-/Applications/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -regtest -dnsseed=0 -connect=localhost:18332 -datadir=/Users/snair/Documents/Data/Incubation/BlockChain/regtest/
+/Applications/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -regtest -dnsseed=0 -connect=localhost:18332 -datadir=<dir>
 
 blockchain-certificates
 =======================

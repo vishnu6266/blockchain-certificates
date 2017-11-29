@@ -27,7 +27,7 @@ def issue_hash(conf, with_metadata, merkle_root):
     print('issuing_address:\t{}'.format(conf.issuing_address))
     print('full_node_url:\t\t{}'.format(conf.full_node_url))
     print('full_node_rpc_user:\t{}'.format(conf.full_node_rpc_user))
-    print('testnet:\t\t{}'.format(conf.testnet))
+    print('network:\t\t{}'.format(conf.network))
     print('tx_fee_per_byte:\t{}'.format(conf.tx_fee_per_byte))
     print('hash_prefix:\t\t{}'.format(conf.hash_prefix))
 
@@ -58,10 +58,11 @@ def issue_hash(conf, with_metadata, merkle_root):
         blockchain_hash = '20202020202020' + hash_hex
 
     # initialize full node connection
-    if(conf.testnet):
-        bitcoin.SelectParams('testnet')
-    else:
-        bitcoin.SelectParams('mainnet')
+    #if(conf.testnet):
+    #    bitcoin.SelectParams('testnet')
+    #else:
+    #    bitcoin.SelectParams('mainnet')
+    bitcoin.SelectParams(conf.network)
 
     proxy = bitcoin.rpc.Proxy("http://{0}:{1}@{2}".format(conf.full_node_rpc_user,
                                                           full_node_rpc_password,
