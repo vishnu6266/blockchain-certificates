@@ -8,6 +8,13 @@ docker run -it -d --name block-chain-certificates -p 28332:8332 -p 28333:8333 -p
 
 ### Create certificate
 
+#### AWS
+
+Run /home/ec2-user/pdf-certs/issue_certificate.sh  in EC2 instance
+
+Configuration files available in S3
+
+
 #### To test using regtest
 
 bitcoin-cli -regtest getnewaddress
